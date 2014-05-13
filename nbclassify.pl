@@ -39,7 +39,7 @@ while (<$fh>) {
     
     my $sample = {
         labels => [split(';', $row->{Tags})],
-        tokens => [split('\s', $row->{Code} . $row->{Body})] # features
+        tokens => [split(m/[^\w]/, $row->{Code} . $row->{Body})] # features
     };
     
     if(scalar @training_data >= $training_count) {
