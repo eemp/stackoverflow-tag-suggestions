@@ -10,7 +10,7 @@ use Text::English;
 
 use Data::Dumper;
 
-use constant KEYWORDSPERQUERY   =>  20;
+use constant KEYWORDSPERQUERY   =>  10;
 
 sub new
 {
