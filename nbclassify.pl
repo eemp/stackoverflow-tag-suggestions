@@ -24,9 +24,7 @@ if($opt_h || !$opt_i) {
 my $input_file = $opt_i;
 my $training_count = $opt_r || 1000;
 my $testing_count = $opt_t || 100;
-
 my $tag_list = {};
-
 my (@training_data, @testing_data);
 
 open(my $fh, '<', $input_file) or die "Unable to open file, $!";
@@ -35,12 +33,15 @@ while (<$fh>) {
     my $row_xml_str = $_;
     my $row = XMLin($row_xml_str);
     
-    next if !defined $row->{Tags};
+    next if !defined $row->{Tags} || $row->{PostTypeId} != 1;
     
     my $sample = {
         labels => [split(';', $row->{Tags})],
-        tokens => [split(m/[^\w]/, $row->{Code} . $row->{Body})] # features
+        tokens => [split(m/[^\w]/, $row->{Code} . $row->{Body})], # features
+        id => $row->{Id}
     };
+    
+    next if scalar @{$sample->{labels}} < 1;
     
     if(scalar @training_data >= $training_count) {
         my $encountered_sample_tags = 1;
